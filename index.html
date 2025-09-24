@@ -49,3 +49,57 @@
   </footer>
 </body>
 </html>
+<!doctype html>
+<html lang="ky">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Garena Shopp Кыргызстан</title>
+  <style>
+    body{margin:0;font-family:Arial,sans-serif;background:#0b1220;color:#e6eef6;display:flex;flex-direction:column;align-items:center;padding:20px}
+    header{width:100%;max-width:900px;text-align:center;margin-bottom:20px}
+    header h1{font-size:28px;color:#0ea5e9;margin-bottom:4px}
+    header p{color:#94a3b8;margin-top:0}
+    main{width:100%;max-width:900px}
+    .product-card{background:rgba(255,255,255,0.03);padding:16px;border-radius:12px;margin-bottom:16px;text-align:center}
+    .product-card img{width:150px;height:auto;margin-bottom:8px;border-radius:8px}
+    .product-card input, .product-card select{padding:6px;margin:6px 0;width:80%;}
+    .product-card button{padding:8px 12px;background:#0ea5e9;color:white;border:none;border-radius:6px;cursor:pointer}
+    .product-card button:hover{background:#0284c7}
+    footer{margin-top:16px;color:#94a3b8;font-size:14px;text-align:center}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Garena Shopp Кыргызстан</h1>
+    <p>Демо сайт – Free Fire алмаздары</p>
+  </header>
+  <main>
+    <div class="product-card">
+      <h3>Сатып алуу демо</h3>
+      <input type="text" id="userId" placeholder="Сенин айдиң">
+      <select id="diamonds">
+        <option value="100">100 Алмаз - 60 сом</option>
+        <option value="500">500 Алмаз - 280 сом</option>
+        <option value="1000">1000 Алмаз - 550 сом</option>
+      </select>
+      <button onclick="buyDiamonds()">Сатып алуу</button>
+    </div>
+  </main>
+  <footer>
+    © 2025 Garena Shopp Кыргызстан. Бардык укуктар сакталган.
+  </footer>
+
+  <script>
+    function buyDiamonds() {
+      const userId = document.getElementById('userId').value;
+      const diamonds = document.getElementById('diamonds').value;
+      if(!userId) {
+        alert('Айдиңди киргизишиң керек!');
+        return;
+      }
+      alert(`Демо: Айдиң ${userId} үчүн ${diamonds} алмаз кошулду!`);
+    }
+  </script>
+</body>
+</html>
