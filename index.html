@@ -46,81 +46,70 @@
   </main>
   <footer>
     © 2025 Garena Shopp Кыргызстан. Бардык укуктар сакталган.
-   <!doctype html>
+  <!-- (Кыскалаштырылган) Төлөм бүтүрүү бөлүгү менен index.html -->
+<!doctype html>
 <html lang="ky">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Garena Shopp Кыргызстан</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Garena Shopp Кыргызстан — Сатып алуу</title>
   <style>
+    /* (стильдер сол эле) */
     body{margin:0;font-family:Arial,sans-serif;background:#0b1220;color:#e6eef6;display:flex;flex-direction:column;align-items:center;padding:20px}
-    header{width:100%;max-width:900px;text-align:center;margin-bottom:20px}
-    header h1{font-size:28px;color:#0ea5e9;margin-bottom:4px}
-    header p{color:#94a3b8;margin-top:0}
-    main{width:100%;max-width:900px}
-    .product-card{background:rgba(255,255,255,0.03);padding:16px;border-radius:12px;margin-bottom:16px;text-align:center}
-    .product-card input, .product-card select{padding:6px;margin:6px 0;width:80%;}
-    .product-card button{padding:8px 12px;background:#0ea5e9;color:white;border:none;border-radius:6px;cursor:pointer}
-    .product-card button:hover{background:#0284c7}
-    #qrCodeSection{display:none;margin-top:15px}
-    #qrCodeImage{width:200px;height:200px;border-radius:10px;background:#fff;padding:6px}
-    footer{margin-top:16px;color:#94a3b8;font-size:14px;text-align:center}
+    .card{background:rgba(255,255,255,0.03);padding:18px;border-radius:12px;max-width:720px;width:100%}
+    #paymentBox{display:none;text-align:center;margin-top:12px}
+    #paymentBox img{width:240px;height:240px;border-radius:12px;background:#fff;padding:6px}
+    .note{color:#94a3b8;margin-top:8px}
   </style>
 </head>
 <body>
-  <header>
-    <h1>Garena Shopp Кыргызстан</h1>
-    <p>Демо сайт – Free Fire алмаздары</p>
-  </header>
-  <main>
-    <div class="product-card">
-      <h3>Сатып алуу</h3>
-      <input type="text" id="userId" placeholder="Сенин Айдиң">
-      <select id="diamonds">
-        <option value="100" data-price="60">100 Алмаз - 60 сом</option>
-        <option value="500" data-price="280">500 Алмаз - 280 сом</option>
-        <option value="1000" data-price="550">1000 Алмаз - 550 сом</option>
-      </select>
+  <div class="card">
+    <h2>Төлөө</h2>
+    <label>Тандалган товар</label>
+    <select id="chosenProduct">
+      <option value="100" data-price="60">100 Алмаз - 60 сом</option>
+      <option value="500" data-price="280">500 Алмаз - 100 сом</option>
+      <option value="1000" data-price="550">1000 Алмаз - 200 сом</option>
+    </select>
 
-      <button onclick="showQRCode()">Төлөмгө өтүү</button>
+    <label style="margin-top:10px">Байланыш (тел/Telegram)</label>
+    <input type="text" id="buyerContact" placeholder="Тел/Telegram">
 
-      <div id="qrCodeSection">
-        <h4>Төлөө үчүн QR кодду сканерлеңиз</h4>
-        <img id="qrCodeImage" src="" alt="QR Code">
-        <p id="qrInfo" style="font-size:12px; color:#94a3b8;"></p>
+    <div style="margin-top:12px">
+      <button id="payBtn">Төлөөгө өтүү</button>
+    </div>
+
+    <div id="paymentBox">
+      <h4>Төлөө үчүн QR</h4>
+      <img id="paymentQr" src="" alt="Payment QR">
+      <div class="note" id="paymentNote"></div>
+      <div style="margin-top:8px">
+        <button id="paidBtn">Мен төлөдүм — Текшерип бер</button>
       </div>
     </div>
-  </main>
-  <footer>
-    © 2025 Garena Shopp Кыргызстан. Бардык укуктар сакталган.
-  </footer>
+  </div>
 
   <script>
-    function showQRCode() {
-      const userId = document.getElementById('userId').value.trim();
-      const sel = document.getElementById('diamonds');
-      const diamonds = sel.value;
-      const price = sel.options[sel.selectedIndex].dataset.price;
+    // Сен берген QR сүрөтүнүн түз URL'и:
+    const PAYMENT_QR_URL = 'https://i.ibb.co/35ynM2k9/IMG-20250924-WA0021.jpg';
 
-      if (!userId) {
-        alert('Айдиңди киргизишиң керек!');
-        return;
-      }
+    document.getElementById('payBtn').addEventListener('click', () => {
+      const buyer = document.getElementById('buyerContact').value.trim();
+      const sel = document.getElementById('chosenProduct');
+      const productText = sel.options[sel.selectedIndex].text;
+      if (!buyer) { alert('Байланышыңды киргиз!'); return; }
 
-      // QR'ге салынуучу текст — бул жерде жөн гана маалымат (демо).
-      // Реал төлөм үчүн банктын статикалык QR'ин колдонуң (бул аркылуу карта маалыматтарын жүктөөгө болбойт).
-      const qrText = `GarenaShopp|user:${userId}|items:${diamonds}d|price:${price}KGS`;
+      // QR көрсөткүчүн жана көрсөтмөнү чыгарып кой
+      document.getElementById('paymentQr').src = PAYMENT_QR_URL;
+      document.getElementById('paymentNote').textContent = `Сатып алуучу: ${buyer}. Төлөө суммасы: ${sel.options[sel.selectedIndex].dataset.price} сом. Сканерлеп төлөп, чектелген сумманы биринчи сынап көрүңүз.`;
+      document.getElementById('paymentBox').style.display = 'block';
+      // Сайтта тасма катары кайрадан көрсөтүү (клиент чекти жөнөтсүн деп) 
+    });
 
-      // Google Chart API аркылуу QR сүрөтүн түзүү (200x200)
-      const qrUrl = 'https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=' + encodeURIComponent(qrText);
-
-      // Сүрөттү койуу жана көрсөтүү
-      const img = document.getElementById('qrCodeImage');
-      img.src = qrUrl;
-
-      document.getElementById('qrInfo').textContent = `Айди: ${userId} — ${diamonds} алмаз — ${price} сом.`;
-      document.getElementById('qrCodeSection').style.display = 'block';
-    }
+    // "Мен төлөдүм" басканда билдирүү (сен жетекчиликке ылайык иштейсиң)
+    document.getElementById('paidBtn').addEventListener('click', () => {
+      alert('Оң — эндикте чекті/скриншотту Telegram же WhatsApp аркылуу жөнөтүңүз. Сиздин маалыматыңыз текшерилет.');
+    });
   </script>
 </body>
 </html>
