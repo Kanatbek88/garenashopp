@@ -56,6 +56,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Garena Shopp Кыргызстан</title>
   <style>
+  <!doctype html>
+<html lang="ky">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Garena Shopp Кыргызстан</title>
+  <style>
     body{margin:0;font-family:Arial,sans-serif;background:#0b1220;color:#e6eef6;display:flex;flex-direction:column;align-items:center;padding:20px}
     header{width:100%;max-width:900px;text-align:center;margin-bottom:20px}
     header h1{font-size:28px;color:#0ea5e9;margin-bottom:4px}
@@ -76,14 +83,21 @@
   </header>
   <main>
     <div class="product-card">
-      <h3>Сатып алуу демо</h3>
-      <input type="text" id="userId" placeholder="Сенин айдиң">
+      <h3>Сатып алуу</h3>
+      <input type="text" id="userId" placeholder="Сенин Айдиң">
       <select id="diamonds">
         <option value="100">100 Алмаз - 60 сом</option>
         <option value="500">500 Алмаз - 280 сом</option>
         <option value="1000">1000 Алмаз - 550 сом</option>
       </select>
-      <button onclick="buyDiamonds()">Сатып алуу</button>
+
+      <button onclick="showQRCode()">Төлөмгө өтүү</button>
+
+      <div id="qrCodeSection" style="display:none; margin-top: 15px;">
+        <h4>Төлөө үчүн QR кодду сканерлеңиз</h4>
+        <img id="qrCodeImage" src="https://i.ibb.co/C0c9b68/1000424163.jpg" alt="Mbank QR Code" style="width:200px; height:200px; border-radius:10px;">
+        <p style="font-size:12px; color:#94a3b8;">Mbank же башка банк тиркемеси аркылуу сканерлеңиз.</p>
+      </div>
     </div>
   </main>
   <footer>
@@ -91,14 +105,14 @@
   </footer>
 
   <script>
-    function buyDiamonds() {
+    function showQRCode() {
       const userId = document.getElementById('userId').value;
-      const diamonds = document.getElementById('diamonds').value;
-      if(!userId) {
+      if (!userId) {
         alert('Айдиңди киргизишиң керек!');
         return;
       }
-      alert(`Демо: Айдиң ${userId} үчүн ${diamonds} алмаз кошулду!`);
+      const qrCodeSection = document.getElementById('qrCodeSection');
+      qrCodeSection.style.display = 'block';
     }
   </script>
 </body>
