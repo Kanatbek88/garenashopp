@@ -80,8 +80,9 @@
   <option value="4000" data-price="800">4000 Алмаз - 800 сом</option>
 </select>
 
+
 <label style="margin-top:10px">Байланыш (тел/Telegram)</label>
-<input type="text" id="buyerContact" placeholder="+996 000 000 000">
+<input type="text" id="buyerContact" placeholder="+996XXXXXXXXX">
 
 <div style="margin-top:12px">
   <button id="payBtn">Төлөөгө өтүү</button>
@@ -96,6 +97,37 @@
   </div>
 </div>
 
+<script>
+const PAYMENT_QR_URL = "https://i.ibb.co/35ynM2k9/IMG-20250924-WA0021.jpg";
+
+document.getElementById("payBtn").addEventListener("click", () => {
+  const buyer = document.getElementById("buyerContact").value.trim();
+  const sel = document.getElementById("chosenProduct");
+  const productText = sel.options[sel.selectedIndex].text;
+
+  // Кыргызстан номер текшерүү (+996 жана 9 цифра)
+  const phoneRegex = /^\+996\d{9}$/;
+
+  if (!buyer) {
+    alert("Байланышыңды киргиз!");
+    return;
+  } else if (!phoneRegex.test(buyer)) {
+    alert("Телефон номерди туура форматта жазыңыз! Мисалы: +996500123456");
+    return;
+  }
+
+  // QR жана маалыматты чыгаруу
+  document.getElementById("paymentQr").src = PAYMENT_QR_URL;
+  document.getElementById("paymentNote").textContent =
+    `Сатып алуучу: ${buyer}. Тандалган товар: ${productText}.`;
+  document.getElementById("paymentBox").style.display = "block";
+});
+
+document.getElementById("paidBtn").addEventListener("click", () => {
+  alert("Чекти Telegram же WhatsApp аркылуу жөнөтүңүз. Сиздин төлөм текшерилет ✅");
+});
+</script>
+    
 <script>
 const PAYMENT_QR_URL = "https://i.ibb.co/35ynM2k9/IMG-20250924-WA0021.jpg";
 
