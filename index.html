@@ -118,41 +118,111 @@
   <!-- Бул жерге продукт карточкалары JS аркылуу чыгат -->
 </div>
 
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+<meta charset="UTF-8">
+<title>Платежный метод 💳</title>
+<style>
+  body {
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#0b1220;
+    color:#e6eef6;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px;
+  }
+
+  h2 {color:#0ea5e9; margin-bottom:20px;}
+
+  form {
+    background: rgba(0,0,0,0.6);
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 0 10px rgba(0,0,0,0.3);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  input, select, button {
+    padding:10px;
+    margin:8px 0;
+    width:250px;
+    border-radius:6px;
+    border:1px solid #ccc;
+    font-size:14px;
+  }
+
+  button {
+    background:#0ea5e9;
+    color:white;
+    border:none;
+    cursor:pointer;
+    font-weight:bold;
+  }
+
+  button:hover {background:#0284c7;}
+
+  #result {margin-top:15px; font-weight:bold; color:#0ea5e9; text-align:center;}
+</style>
+</head>
+<body>
+
+<h2>Платежный метод 💳</h2>
+
 <form id="paymentForm">
-  <input type="text" placeholder="Карта номери" required>
-  <input type="text" placeholder="Мөөнөт (MM/YY)" required>
-  <input type="text" placeholder="CVV" required>
-  <select>
+  <input type="text" name="cardNumber" placeholder="Карта номери" required>
+  <input type="text" name="expiry" placeholder="Мөөнөт (MM/YY)" required>
+  <input type="text" name="cvv" placeholder="CVV" required>
+
+  <label for="diamonds">Алмаз пакети тандаңыз:</label>
+  <select name="diamonds" id="diamonds" required>
+    <option value="">Тандаңыз</option>
     <option value="100">100 Алмаз - 60 сом</option>
     <option value="500">500 Алмаз - 100 сом</option>
+    <option value="1000">1000 Алмаз - 200 сом</option>
+    <option value="1500">1500 Алмаз - 300 сом</option>
   </select>
+
   <button type="submit">Төлөө</button>
 </form>
+
 <p id="result"></p>
 
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
-  emailjs.init("ТВОЙ_PUBLIC_KEY"); // сенин EmailJS public key
+function isValidCard(number){
+  let sum=0, dbl=false;
+  for(let i=number.length-1;i>=0;i--){
+    let d=parseInt(number[i]);
+    if(dbl){d*=2;if(d>9)d-=9;}
+    sum+=d; dbl=!dbl;
+  }
+  return sum%10===0;
+}
 
-  document.getElementById('paymentForm').addEventListener('submit', function(e){
-    e.preventDefault();
+document.getElementById('paymentForm').addEventListener('submit', function(e){
+  e.preventDefault();
 
-    // Текшерүү Luhn алгоритми
-    const cardNumber = this[0].value.trim();
-    let sum=0, dbl=false;
-    for(let i=cardNumber.length-1;i>=0;i--){
-      let d=parseInt(cardNumber[i]);
-      if(dbl){d*=2;if(d>9)d-=9;}
-      sum+=d; dbl=!dbl;
-    }
-    if(sum%10!==0){
-      document.getElementById('result').textContent="Ката: карта номер туура эмес!";
-      return;
-    }
+  const cardNumber = this.cardNumber.value.trim();
+  const diamonds = this.diamonds.value;
 
-    // Email жөнөтүү (тек гана "Успешно прошли!")
-    emailjs.send('service_id', 'template_sw2lq9e', {message: "Успешно прошли!"})
-    .then(()=>{document.getElementById('result').textContent="Успешно прошли!";},
-          (err)=>{document.getElementById('result').textContent="Ката кетти: "+JSON.stringify(err);});
-  });
+  if(!isValidCard(cardNumber)){
+    document.getElementById('result').textContent="Ката: карта номер туура эмес!";
+    return;
+  }
+
+  if(!diamonds){
+    document.getElementById('result').textContent="Алмаз пакетин тандаңыз!";
+    return;
+  }
+
+  document.getElementById('result').textContent="Успешно прошли!";
+  this.reset();
+});
 </script>
+
+</body>
+</html>
