@@ -113,3 +113,49 @@
   </script>
 </body>
 </html>
+    <!-- productsDiv бөлүгү -->
+<div id="products">
+  <!-- Бул жерге продукт карточкалары JS аркылуу чыгат -->
+</div>
+
+<script>
+  // Free Fire алмаздарынын сүрөттөрү жана маалыматтары
+  const PRODUCTS = [
+    { id: 'd100', title: '100 Алмаз', price: 60, img: 'https://via.placeholder.com/150?text=100+Алмаз' },
+    { id: 'd500', title: '500 Алмаз', price: 280, img: 'https://via.placeholder.com/150?text=500+Алмаз' },
+    { id: 'd1000', title: '1000 Алмаз', price: 550, img: 'https://via.placeholder.com/150?text=1000+Алмаз' }
+  ];
+
+  const productsDiv = document.getElementById('products');
+  const chosenSelect = document.getElementById('chosenProduct'); // select элемент
+
+  PRODUCTS.forEach(p => {
+    // карточка түзүү
+    const box = document.createElement('div');
+    box.className = 'product';
+    box.innerHTML = `
+      <img src="${p.img}" alt="${p.title}">
+      <div>
+        <h3>${p.title}</h3>
+        <div class="meta">${p.price} сом</div>
+      </div>
+      <div class="buy">
+        <button data-id="${p.id}">Тандоо</button>
+      </div>
+    `;
+    productsDiv.appendChild(box);
+
+    // selectке кошуу
+    const opt = document.createElement('option');
+    opt.value = p.id;
+    opt.textContent = `${p.title} — ${p.price} сом`;
+    chosenSelect.appendChild(opt);
+
+    // Тандоо кнопкасы selectти жаңыртат
+    box.querySelector('button').addEventListener('click', () => {
+      chosenSelect.value = p.id;
+      box.style.outline = '2px solid rgba(14,165,233,0.15)';
+      setTimeout(()=> box.style.outline='none', 900);
+    });
+  });
+</script>
