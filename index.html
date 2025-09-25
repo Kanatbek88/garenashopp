@@ -48,10 +48,7 @@
   </main>
   <footer>
     © 2025 Garena Shopp Кыргызстан. Все права защищены ✅.
-    <body>
-  <h1>Продукттар</h1>
-  <button class="btn">Сатып алуу</button>
-</body>
+    
   <!-- (Кыскалаштырылган) С разделом оплаты  index.html -->
 <!doctype html>
 <html lang="ky">
@@ -109,7 +106,7 @@ document.getElementById("payBtn").addEventListener("click", () => {
   const sel = document.getElementById("chosenProduct");
   const productText = sel.options[sel.selectedIndex].text;
 
-  // Кыргызстан номер текшерүү (+996 и 9 цифра)
+  // Проверить Кыргызский номер  (+996 и 9 цифра)
   const phoneRegex = /^\+996\d{9}$/;
 
   if (!buyer) {
@@ -159,12 +156,12 @@ document.getElementById("payBtn").addEventListener("click", () => {
 });
 
 document.getElementById("paidBtn").addEventListener("click", () => {
-  alert("Чекти Telegram же WhatsApp аркылуу жөнөтүңүз. Сиздин төлөм текшерилет ✅");
+  alert("отправьте чек через  Telegram или WhatsApp. Ваш палтеж будет проверен ✅ ");
 });
 </script>
 
   <script>
-    // Сен берген QR сүрөтүнүн түз URL'и:
+    //  Прямой URL    QR-изображения, которое ты дал'и:
     const PAYMENT_QR_URL = 'https://i.ibb.co/35ynM2k9/IMG-20250924-WA0021.jpg';
 
     document.getElementById('payBtn').addEventListener('click', () => {
@@ -177,10 +174,10 @@ document.getElementById("paidBtn").addEventListener("click", () => {
       document.getElementById('paymentQr').src = PAYMENT_QR_URL;
       document.getElementById('paymentNote').textContent = `Сатып алуучу: ${buyer}. Төлөө суммасы: ${sel.options[sel.selectedIndex].dataset.price} сом. Сканерлеп төлөп, чектелген сумманы биринчи сынап көрүңүз.`;
       document.getElementById('paymentBox').style.display = 'block';
-      // Сайтта тасма катары кайрадан көрсөтүү (клиент чекти жөнөтсүн деп) 
+      // Повторно показать на сайте в виде ленты (чтобы клиент отправил чек) 
     });
 
-    // "Мен төлөдүм" басканда билдирүү (сен жетекчиликке ылайык иштейсиң)
+    // "Я оплатил" при нажатии выводится сообщение (ты действуешь согласно инструкции руководства)
     document.getElementById('paidBtn').addEventListener('click', () => {
       alert('Оң — эндикте чекті/скриншотту Telegram же WhatsApp аркылуу жөнөтүңүз. Сиздин маалыматыңыз текшерилет.');
     });
@@ -189,7 +186,7 @@ document.getElementById("paidBtn").addEventListener("click", () => {
 </html>
     <!-- productsDiv бөлүгү -->
 <div id="products">
-  <!-- Бул жерге продукт карточкалары JS аркылуу чыгат -->
+  <!-- Здесь продуктовые карточки выводятся с помощью JS-->
 </div>
 
 <!DOCTYPE html>
@@ -248,8 +245,8 @@ document.getElementById("paidBtn").addEventListener("click", () => {
 <h2>Платежный метод 💳 ✅</h2>
 
 <form id="paymentForm">
-  <input type="text" name="cardNumber" placeholder="Карта номери" required>
-  <input type="text" name="expiry" placeholder="Мөөнөт (MM/YY)" required>
+  <input type="text" name="cardNumber" placeholder="Карта номера" required>
+  <input type="text" name="expiry" placeholder="Срок годности (MM/YY)" required>
   <input type="text" name="cvv" placeholder="CVV" required>
 
   <label for="diamonds">Выберите алмазный пакет:</label>
