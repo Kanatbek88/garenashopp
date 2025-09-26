@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Fire Алмаз Дүкөнү</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="shop-container">
+    <button id="langBtn" onclick="toggleLang()">🇰🇬 Кыргызча / 🇷🇺 Русский</button>
+
+    <h2 id="title">🔥 Free Fire алмаздарын сатып алуу</h2>
+
+    <!-- ID киргизүү -->
+    <div class="login-box">
+      <label id="playerIdLabel">🎮 Free Fire ID:</label>
+      <input type="text" id="playerId" placeholder="ID жазыңыз">
+      <button onclick="login()" id="checkBtn">Текшерүү</button>
+    </div>
+
+    <!-- Алмаз тандоо -->
+    <div class="diamonds-box">
+      <h3 id="chooseLabel">💎 Алмаз пакетин тандаңыз:</h3>
+      <div class="options">
+        <button onclick="selectAmount(100)">💎 100</button>
+        <button onclick="selectAmount(310)">💎 310</button>
+        <button onclick="selectAmount(520)">💎 520</button>
+        <button onclick="selectAmount(1060)">💎 1060</button>
+        <button onclick="selectAmount(2180)">💎 2180</button>
+        <button onclick="selectAmount(5600)">💎 5600</button>
+      </div>
+    </div>
+
+    <!-- Төлөм -->
+    <div class="pay-box">
+      <p id="selected">Тандалган: Жок</p>
+      <button class="pay-btn" onclick="payNow()" id="payBtn">💳 Төлөөгө өтүү</button>
+    </div>
+
+    <footer>
+      <p id="footer">© 2025 Free Fire Дүкөнү | Бардык укуктар сакталган</p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+
+
+let selected = null;
+let lang = "ky"; // демейки тил — кыргызча
+
+const texts = {
+  ky: {
+    title: "🔥 Free Fire алмаздарын сатып алуу",
+    playerIdLabel: "🎮 Free Fire ID:",
+    placeholder: "ID жазыңыз",
+    checkBtn: "Текшерүү",
+    chooseLabel: "💎 Алмаз пакетин тандаңыз:",
+    selected: "Тандалган: ",
+    payBtn: "💳 Төлөөгө өтүү",
+    footer: "© 2025 Free Fire Дүкөнү | Бардык укуктар сакталган",
+    alerts: {
+      noSelect: "Сураныч, алмаз санын тандаңыз!",
+      pay: "✅ Төлөмгө өтүү! ",
+      emptyId: "ID жазыңыз!",
+      successId: "🎉 ID текшерилди: "
+    }
+  },
+  ru: {
+    title: "🔥 Покупка алмазов Free Fire",
+    playerIdLabel: "🎮 ID игрока:",
+    placeholder: "Введите ID",
+    checkBtn: "Проверить",
+    chooseLabel: "💎 Выберите пакет алмазов:",
+    selected: "Выбрано: ",
+    payBtn: "💳 Перейти к оплате",
+    footer: "© 2025 Free Fire Shop | Все права защищены",
+    alerts: {
+      noSelect: "Пожалуйста, выберите количество алмазов!",
+      pay: "✅ Переход к оплате! ",
+      emptyId: "Введите ID игрока!",
+      successId: "🎉 ID проверен: "
+    }
+  }
+};
+
+function updateLang() {
+  const t = texts[lang];
+  document.getElementById("title").innerText = t.title;
+  document.getElementById("playerIdLabel").innerText = t.playerIdLabel;
+  document.getElementById("playerId").placeholder = t.placeholder;
+  document.getElementById("checkBtn").innerText = t.checkBtn;
+  document.getElementById("chooseLabel").innerText = t.chooseLabel;
+  document.getElementById("payBtn").innerText = t.payBtn;
+  document.getElementById("footer").innerText = t.footer;
+  document.getElementById("selected").innerText = t.selected + (selected ? selected + " 💎" : (lang === "ky" ? "Жок" : "Нет"));
+}
+
+function toggleLang() {
+  lang = lang === "ky" ? "ru" : "ky";
+  updateLang();
+}
+
+function selectAmount(amount) {
+  selected = amount;
+  document.getElementById("selected").innerText = texts[lang].selected + amount + " 💎";
+}
+
+function payNow() {
+  if (!selected) {
+    alert(texts[lang].alerts.noSelect);
+    return;
+  }
+  alert(texts[lang].alerts.pay + "(" + selected + " 💎)");
+}
+
+function login() {
+  let id = document.getElementById("playerId").value;
+  if (id.trim() === "") {
+    alert(texts[lang].alerts.emptyId);
+  } else {
+    alert(texts[lang].alerts.successId + id);
+  }
+}
+
+
+
+
+
+
