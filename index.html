@@ -1,128 +1,388 @@
-<!DOCTYPE html>
-<html lang="ky">
+<!doctype html>
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free Fire Алмаз Дүкөнү</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Free Fire Алмаз Магазин</title>
+  <style>
+    :root{
+      --bg1: #0b1220;
+      --card: rgba(255,255,255,0.04);
+      --accent: #0ea5e9;
+      --accent-2: #ff4747;
+      --success: #60c78f;
+      --danger: #f43f5e;
+      --muted: #94a3b8;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(135deg,#0b1220 0%, #071028 100%);
+      color:#e6eef6;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:20px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:920px;
+      display:grid;
+      grid-template-columns: 1fr 380px;
+      gap:24px;
+      align-items:start;
+    }
+
+    .panel{
+      background:var(--card);
+      padding:18px;
+      border-radius:12px;
+      box-shadow: 0 6px 20px rgba(2,6,23,0.6);
+    }
+
+    header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    header h1{margin:0;font-size:20px;color:var(--accent)}
+    .lang-btn{background:transparent;border:1px solid rgba(255,255,255,0.06);color:#e6eef6;padding:8px 10px;border-radius:8px;cursor:pointer}
+    .lang-btn:hover{opacity:0.9}
+
+    /* left big panel: product list */
+    .cards{display:grid;grid-template-columns:repeat(auto-fill, minmax(220px,1fr));gap:14px}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);
+      display:flex;flex-direction:column;gap:8px;
+    }
+    .card h3{margin:0;color:#fff;font-size:16px}
+    .meta{color:var(--muted);font-size:13px}
+    .price{margin-top:auto;font-weight:700;color:var(--accent-2)}
+    .buy-tiny{background:var(--accent);color:#042; padding:6px 8px;border-radius:8px;border:none;cursor:pointer}
+    .buy-tiny:disabled{opacity:.5;cursor:not-allowed}
+
+    /* right panel: checkout */
+    .checkout h2{margin:0 0 8px 0;color:var(--accent)}
+    label{display:block;color:var(--muted);font-size:13px;margin-top:10px}
+    input[type="text"]{
+      width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);
+      background:rgba(255,255,255,0.02);color:inherit;font-size:14px;
+    }
+    .id-row{display:flex;gap:8px;align-items:center}
+    .id-row input{flex:1}
+    .small-btn{padding:8px 10px;border-radius:8px;border:none;background:var(--accent);color:#fff;cursor:pointer}
+    .small-btn.alt{background:transparent;border:1px solid rgba(255,255,255,0.04)}
+    .packages{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .pkg{padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);cursor:pointer;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent)}
+    .pkg.selected{outline:2px solid rgba(14,165,233,0.16);box-shadow:0 6px 16px rgba(14,165,233,0.06)}
+    .pkg .title{font-weight:700}
+    .pkg .price{color:var(--accent-2);margin-top:6px}
+    .pay-btn{width:100%;padding:12px;border-radius:10px;border:none;background:var(--success);color:#042;font-weight:700;margin-top:12px;cursor:pointer;font-size:15px}
+    .pay-btn:disabled{opacity:.6;cursor:not-allowed}
+
+    .note{font-size:13px;color:var(--muted);margin-top:8px}
+    .error{color:var(--danger);font-weight:700;margin-top:8px}
+    .ok{color:var(--success);font-weight:700;margin-top:8px}
+
+    footer.small{grid-column:1/-1;margin-top:10px;color:var(--muted);font-size:13px;text-align:center}
+
+    @media(max-width:880px){
+      .wrap{grid-template-columns:1fr;max-width:560px}
+    }
+
+  </style>
 </head>
 <body>
-  <div class="shop-container">
-    <button id="langBtn" onclick="toggleLang()">🇰🇬 Кыргызча / 🇷🇺 Русский</button>
+  <div class="wrap">
+    <!-- LEFT: Catalog -->
+    <div class="panel">
+      <header>
+        <h1 id="siteTitle">🔥 Free Fire Магазин</h1>
+        <button class="lang-btn" id="langBtn">Русский / Кыргызча</button>
+      </header>
 
-    <h2 id="title">🔥 Free Fire алмаздарын сатып алуу</h2>
+      <p id="intro" style="color:var(--muted);margin-top:6px;margin-bottom:14px">
+        Здесь показаны примеры аккаунтов и пакетов — данные демонстрационные.
+      </p>
 
-    <!-- ID киргизүү -->
-    <div class="login-box">
-      <label id="playerIdLabel">🎮 Free Fire ID:</label>
-      <input type="text" id="playerId" placeholder="ID жазыңыз">
-      <button onclick="login()" id="checkBtn">Текшерүү</button>
-    </div>
-
-    <!-- Алмаз тандоо -->
-    <div class="diamonds-box">
-      <h3 id="chooseLabel">💎 Алмаз пакетин тандаңыз:</h3>
-      <div class="options">
-        <button onclick="selectAmount(100)">💎 100</button>
-        <button onclick="selectAmount(310)">💎 310</button>
-        <button onclick="selectAmount(520)">💎 520</button>
-        <button onclick="selectAmount(1060)">💎 1060</button>
-        <button onclick="selectAmount(2180)">💎 2180</button>
-        <button onclick="selectAmount(5600)">💎 5600</button>
+      <div class="cards" id="catalog">
+        <!-- карточки генерируются JS -->
       </div>
+
+      <footer class="small">© 2025 Free Fire Shop — Все права защищены</footer>
     </div>
 
-    <!-- Төлөм -->
-    <div class="pay-box">
-      <p id="selected">Тандалган: Жок</p>
-      <button class="pay-btn" onclick="payNow()" id="payBtn">💳 Төлөөгө өтүү</button>
-    </div>
+    <!-- RIGHT: Checkout -->
+    <div class="panel checkout">
+      <h2 id="checkoutTitle">Покупка алмазов</h2>
 
-    <footer>
-      <p id="footer">© 2025 Free Fire Дүкөнү | Бардык укуктар сакталган</p>
-    </footer>
+      <label id="labelId">ID игрока</label>
+      <div class="id-row">
+        <input type="text" id="playerId" placeholder="Введите Free Fire ID" />
+        <button class="small-btn" id="checkIdBtn">Проверить</button>
+      </div>
+      <div id="idResult" class="note"></div>
+
+      <label id="labelChoose">Выберите пакет</label>
+      <div class="packages" id="packages">
+        <!-- пакеты генерируются JS -->
+      </div>
+
+      <p id="selectedSummary" class="note">Выбрано: —</p>
+
+      <button class="pay-btn" id="payBtn" disabled>💳 Перейти к оплате</button>
+
+      <div id="message" style="min-height:28px"></div>
+      <p class="note" style="margin-top:10px" id="helpText">После нажатия "Перейти к оплате" откроется демо-окно. Реальные платежи не выполняются.</p>
+    </div>
   </div>
 
-  <script src="script.js"></script>
-</body>
-</html>
+<script>
+/* ========= Данные (демо) ========= */
+const ffPlayers = {
+  // Примеры ID -> ник
+  "123456789": "DarkWolf",
+  "987654321": "Madara",
+  "111222333": "Жанторо",
+  "222333444": "LionFire",
+  "555666777": "Phoenix",
+  // можно добавить свои тестовые ID
+};
 
+const catalogAccounts = [
+  { id:1, nick:"PRO_BALA99", level:70, diamonds:1500, rank:"Heroic", price:5000, image:"https://i.ibb.co/7rZsHY8/20240914-142912.jpg" },
+  { id:2, nick:"KING_SHOT", level:55, diamonds:800, rank:"Master", price:3500, image:"https://i.ibb.co/35ynM2k9/IMG-20250924-WA0021.jpg" }
+];
 
+const packagesList = [
+  {key:100, label:"100 Алмаз", price:60},
+  {key:500, label:"500 Алмаз", price:100},
+  {key:1000, label:"1000 Алмаз", price:200},
+  {key:1500, label:"1500 Алмаз", price:300},
+  {key:2000, label:"2000 Алмаз", price:400},
+  {key:2500, label:"2500 Алмаз", price:500},
+  {key:3000, label:"3000 Алмаз", price:600},
+  {key:3500, label:"3500 Алмаз", price:700},
+  {key:4000, label:"4000 Алмаз", price:800},
+];
 
-
-let selected = null;
-let lang = "ky"; // демейки тил — кыргызча
+/* ========= Языки ========= */
+let lang = "ru"; // по умолчанию - русский
 
 const texts = {
-  ky: {
-    title: "🔥 Free Fire алмаздарын сатып алуу",
-    playerIdLabel: "🎮 Free Fire ID:",
-    placeholder: "ID жазыңыз",
-    checkBtn: "Текшерүү",
-    chooseLabel: "💎 Алмаз пакетин тандаңыз:",
-    selected: "Тандалган: ",
-    payBtn: "💳 Төлөөгө өтүү",
-    footer: "© 2025 Free Fire Дүкөнү | Бардык укуктар сакталган",
-    alerts: {
-      noSelect: "Сураныч, алмаз санын тандаңыз!",
-      pay: "✅ Төлөмгө өтүү! ",
-      emptyId: "ID жазыңыз!",
-      successId: "🎉 ID текшерилди: "
-    }
-  },
   ru: {
-    title: "🔥 Покупка алмазов Free Fire",
-    playerIdLabel: "🎮 ID игрока:",
-    placeholder: "Введите ID",
+    siteTitle: "🔥 Free Fire Магазин",
+    checkoutTitle: "Покупка алмазов",
+    labelId: "ID игрока",
+    idPlaceholder: "Введите Free Fire ID",
     checkBtn: "Проверить",
-    chooseLabel: "💎 Выберите пакет алмазов:",
-    selected: "Выбрано: ",
-    payBtn: "💳 Перейти к оплате",
-    footer: "© 2025 Free Fire Shop | Все права защищены",
-    alerts: {
-      noSelect: "Пожалуйста, выберите количество алмазов!",
-      pay: "✅ Переход к оплате! ",
-      emptyId: "Введите ID игрока!",
-      successId: "🎉 ID проверен: "
-    }
+    chooseLabel: "Выберите пакет",
+    selected: "Выбрано",
+    pay: "💳 Перейти к оплате",
+    helpText: "После нажатия \"Перейти к оплате\" откроется демо-окно. Реальные платежи не выполняются.",
+    idNotFormat: "Ошибка: ID должен быть только из цифр (9–12 символов).",
+    idNotFound: "ID не найден в базе (демо). Проверьте правильность.",
+    idOk: "ID найден. Ник: ",
+    choosePackage: "Пожалуйста, выберите пакет.",
+    paySuccess: "Успешно! (демо) — спасибо за покупку.",
+  },
+  ky: {
+    siteTitle: "🔥 Free Fire Дүкөнү",
+    checkoutTitle: "Алмаз сатып алуу",
+    labelId: "Оюнчу ID",
+    idPlaceholder: "Free Fire ID жазыңыз",
+    checkBtn: "Текшерүү",
+    chooseLabel: "Пакет тандаңыз",
+    selected: "Тандалды",
+    pay: "💳 Төлөөгө өтүү",
+    helpText: "«Төлөөгө өтүү» басканда демо терезе ачылат. Чыныгы төлөм жүргүзүлбөйт.",
+    idNotFormat: "Ката: ID сан гана болушу керек (9–12 цифра).",
+    idNotFound: "ID табылган жок (демо). Текшерип кайра жазыңыз.",
+    idOk: "ID табылды. Ник: ",
+    choosePackage: "Сураныч, пакет тандаңыз.",
+    paySuccess: "Успешно! (демо) — сатып алган үчүн рахмат.",
   }
 };
 
-function updateLang() {
-  const t = texts[lang];
-  document.getElementById("title").innerText = t.title;
-  document.getElementById("playerIdLabel").innerText = t.playerIdLabel;
-  document.getElementById("playerId").placeholder = t.placeholder;
-  document.getElementById("checkBtn").innerText = t.checkBtn;
-  document.getElementById("chooseLabel").innerText = t.chooseLabel;
-  document.getElementById("payBtn").innerText = t.payBtn;
-  document.getElementById("footer").innerText = t.footer;
-  document.getElementById("selected").innerText = t.selected + (selected ? selected + " 💎" : (lang === "ky" ? "Жок" : "Нет"));
+/* ========= Инициализация UI ========= */
+const catalogEl = document.getElementById('catalog');
+const packagesEl = document.getElementById('packages');
+
+function renderCatalog(){
+  catalogEl.innerHTML = "";
+  catalogAccounts.forEach(acc=>{
+    const div = document.createElement('div');
+    div.className = "card";
+    div.innerHTML = `
+      <img src="${acc.image}" alt="${acc.nick}" style="width:100%;border-radius:8px;object-fit:cover;height:120px">
+      <h3>${acc.nick}</h3>
+      <div class="meta">Уровень: ${acc.level} • Алмаз: ${acc.diamonds}</div>
+      <div class="meta">Ранг: ${acc.rank}</div>
+      <div class="price">${acc.price} сом</div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px">
+        <button class="buy-tiny" onclick="onQuickBuy(${acc.id})">Быстрая покупка</button>
+        <button class="buy-tiny alt" onclick="viewDetails(${acc.id})">Детали</button>
+      </div>
+    `;
+    catalogEl.appendChild(div);
+  });
 }
 
-function toggleLang() {
-  lang = lang === "ky" ? "ru" : "ky";
-  updateLang();
+let selectedPackage = null;
+function renderPackages(){
+  packagesEl.innerHTML = "";
+  packagesList.forEach(pkg=>{
+    const el = document.createElement('div');
+    el.className = "pkg";
+    el.dataset.key = pkg.key;
+    el.innerHTML = `<div class="title">${pkg.label}</div><div class="price">${pkg.price} сом</div>`;
+    el.addEventListener('click', ()=> selectPackage(pkg.key, el));
+    packagesEl.appendChild(el);
+  });
 }
 
-function selectAmount(amount) {
-  selected = amount;
-  document.getElementById("selected").innerText = texts[lang].selected + amount + " 💎";
+function selectPackage(key, el){
+  // убрать выделение у всех
+  document.querySelectorAll('.pkg').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPackage = packagesList.find(p=>p.key===key);
+  updateSelectedSummary();
+  updatePayButtonState();
 }
 
-function payNow() {
-  if (!selected) {
-    alert(texts[lang].alerts.noSelect);
+function updateSelectedSummary(){
+  const text = selectedPackage ? `${texts[lang].selected}: ${selectedPackage.label} — ${selectedPackage.price} сом` : `${texts[lang].selected}: —`;
+  document.getElementById('selectedSummary').innerText = text;
+}
+
+/* ========= ID проверка ========= */
+function isValidIdFormat(id){
+  return /^[0-9]{9,12}$/.test(id);
+}
+
+function checkId(){
+  const id = document.getElementById('playerId').value.trim();
+  const msg = document.getElementById('idResult');
+  msg.className = "note";
+  if(!isValidIdFormat(id)){
+    msg.className = "error";
+    msg.innerText = texts[lang].idNotFormat;
+    updatePayButtonState();
+    return false;
+  }
+  if(ffPlayers[id]){
+    msg.className = "ok";
+    msg.innerText = texts[lang].idOk + ffPlayers[id];
+    updatePayButtonState();
+    return true;
+  } else {
+    msg.className = "error";
+    msg.innerText = texts[lang].idNotFound;
+    updatePayButtonState();
+    return false;
+  }
+}
+
+/* ========= Кнопки: быстрый покупка / детали ========= */
+function onQuickBuy(accountId){
+  // Здесь просто демонстрация: проставим пакет похожий на аккаунт
+  const account = catalogAccounts.find(a=>a.id===accountId);
+  if(account){
+    // выберем пакет, который ближе по кол-ву алмазов
+    let best = packagesList.reduce((prev,cur)=> Math.abs(cur.key - account.diamonds) < Math.abs(prev.key - account.diamonds) ? cur : prev);
+    // найти DOM элемент пакета
+    const pkgEl = [...document.querySelectorAll('.pkg')].find(e => Number(e.dataset.key) === best.key);
+    if(pkgEl) selectPackage(best.key,pkgEl);
+    // прокрутка к панели оплаты
+    window.scrollTo({top: document.querySelector('.checkout').offsetTop - 20, behavior:'smooth'});
+    // проставим ID (демо) — не заполняем автоматически
+  }
+}
+
+function viewDetails(accountId){
+  const account = catalogAccounts.find(a=>a.id===accountId);
+  if(account){
+    alert(`${account.nick}\nУровень: ${account.level}\nАлмаз: ${account.diamonds}\nРанг: ${account.rank}\nЦена: ${account.price} сом`);
+  }
+}
+
+/* ========= Кнопка оплатить ========= */
+function updatePayButtonState(){
+  const payBtn = document.getElementById('payBtn');
+  const isIdOk = isValidIdFormat(document.getElementById('playerId').value.trim()) && ffPlayers[document.getElementById('playerId').value.trim()];
+  payBtn.disabled = !(isIdOk && selectedPackage);
+}
+
+function payNow(){
+  const id = document.getElementById('playerId').value.trim();
+  const messageEl = document.getElementById('message');
+  messageEl.innerHTML = "";
+  if(!isValidIdFormat(id)){
+    messageEl.className = "error";
+    messageEl.innerText = texts[lang].idNotFormat;
     return;
   }
-  alert(texts[lang].alerts.pay + "(" + selected + " 💎)");
+  if(!ffPlayers[id]){
+    messageEl.className = "error";
+    messageEl.innerText = texts[lang].idNotFound;
+    return;
+  }
+  if(!selectedPackage){
+    messageEl.className = "error";
+    messageEl.innerText = texts[lang].choosePackage;
+    return;
+  }
+
+  // Демонстрационный успешный сценарий (реальной оплаты нет)
+  messageEl.className = "ok";
+  messageEl.innerText = texts[lang].paySuccess + `\nID: ${id} — ${ffPlayers[id]}\nПакет: ${selectedPackage.label} (${selectedPackage.price} сом)`;
+  // сброс выборов (опционально)
+  // selectedPackage = null;
+  // document.querySelectorAll('.pkg').forEach(p=>p.classList.remove('selected'));
+  // updateSelectedSummary();
+  // updatePayButtonState();
 }
 
-function login() {
-  let id = document.getElementById("playerId").value;
-  if (id.trim() === "") {
-    alert(texts[lang].alerts.emptyId);
-  } else {
-    alert(texts[lang].alerts.successId + id);
-  }
+/* ========= Язык: автоопределение и переключатель ========= */
+function applyTexts(){
+  document.getElementById('siteTitle').innerText = texts[lang].siteTitle;
+  document.getElementById('checkoutTitle').innerText = texts[lang].checkoutTitle;
+  document.getElementById('labelId').innerText = texts[lang].labelId;
+  document.getElementById('playerId').placeholder = texts[lang].idPlaceholder;
+  document.getElementById('checkIdBtn').innerText = texts[lang].checkBtn;
+  document.getElementById('labelChoose').innerText = texts[lang].chooseLabel;
+  document.getElementById('payBtn').innerText = texts[lang].pay;
+  document.getElementById('helpText').innerText = texts[lang].helpText;
+  updateSelectedSummary();
 }
+
+document.getElementById('langBtn').addEventListener('click', ()=>{
+  lang = (lang === 'ru') ? 'ky' : 'ru';
+  applyTexts();
+  checkId();
+});
+
+document.getElementById('checkIdBtn').addEventListener('click', ()=>{
+  checkId();
+  updatePayButtonState();
+});
+
+document.getElementById('payBtn').addEventListener('click', payNow);
+
+/* автопределение языка: по умолчанию русский, если браузер явно ky -> кыргызский */
+if(navigator.language && navigator.language.startsWith('ky')){
+  lang = 'ky';
+} else {
+  lang = 'ru';
+}
+
+/* инициализация */
+renderCatalog();
+renderPackages();
+applyTexts();
+updateSelectedSummary();
+updatePayButtonState();
+
+</script>
+</body>
+</html>
